@@ -171,6 +171,7 @@ class Graph:
             print( 'temp' , temp )
             the_queue = []
 
+            # Grab the last vertex from the PATH
             if len( temp ) >= 2:
                 for i in temp:
                     print( i )
@@ -183,11 +184,14 @@ class Graph:
             for i in temp:
                 path.append( i )
 
+                # CHECK IF IT'S THE TARGET
                 if i == destination_vertex:
                     path.append( i )
                     print( visited )
+                    # IF SO, RETURN PATH
                     return path
 
+                # If that vertex has not been visited...
                 if i in visited:
                     None
 
@@ -198,17 +202,14 @@ class Graph:
                         
                 print( i )
                 q.enqueue(i)
+
+                # Mark it as visited...
                 visited.add( q.queue[0] )
                 q.queue.pop(0)
                 print( visited )
                 break
 
 
-            # Grab the last vertex from the PATH
-            # If that vertex has not been visited...
-                # CHECK IF IT'S THE TARGET
-                  # IF SO, RETURN PATH
-                # Mark it as visited...
                 # Then add A PATH TO its neighbors to the back of the queue
                   # COPY THE PATH
                   # APPEND THE NEIGHOR TO THE BACK
@@ -220,7 +221,57 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass
+        print( 'Depth First Search' )
+
+        q = Queue()
+        q.enqueue( starting_vertex )
+
+        print( starting_vertex )
+
+        visited = set()
+        path = [[],[]]
+        path[0].append( starting_vertex )
+        path[1].append( starting_vertex )
+
+        while q.queue:
+
+            temp = self.vertices[ q.queue[0] ]
+            print( 'temp' , temp )
+            the_queue = []
+
+            if len( temp ) >= 2:
+                for i in temp:
+                    print( i )
+                    the_queue.insert( 0 , i )
+                temp = the_queue
+                print( 'New Temp:' , temp )
+
+            for i in temp:
+
+                print( 'PATH' , path )
+                path[0].append( i )
+                path[1].append( i )
+                q.enqueue(i)
+
+                    
+                for x in self.vertices[ i ]:
+
+                    if x == destination_vertex:
+                        print( temp , 'AIUAHFKAS' )
+                        for i in self.vertices[ path[0][len( path[0] ) - 1] ]:
+                            if i == destination_vertex:
+                                path[1].append( x )
+                            else:
+                                path[0].append( i )
+                                for i in self.vertices[ path[0][len( path[0] ) - 1] ]:
+                                    if i == destination_vertex:
+                                        path[0].append( i )
+
+                        return path
+                            
+                print( i )
+                q.queue.pop(0)
+                break
 
 
 
@@ -292,7 +343,7 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
