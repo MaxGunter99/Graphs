@@ -1,7 +1,6 @@
 import os
 os.system( 'clear' )
 
-
 #     10
 #     /
 #    1   2   4  11
@@ -12,14 +11,12 @@ os.system( 'clear' )
 
 def earliest_ancestor(ancestors, starting_node):
 
-    print( '\n ---------------- \n' )
-
     # Format ( 10 , 1 )
     # Ancestor ^    ^ Child
 
     parents = []
 
-    print( 'Start from:' , starting_node )
+    print( '\n\n-=-=-=-= Start from:' , starting_node , '=-=-=-=-' )
 
     # Loop through ancestors
     for i in ancestors:
@@ -37,7 +34,7 @@ def earliest_ancestor(ancestors, starting_node):
 
 
         elif i[0] == starting_node:
-            print( 'start - ' , i )
+            # print( 'start' , i )
             parents.append( i[0] )
 
     # In case I missed any
@@ -74,12 +71,12 @@ def earliest_ancestor(ancestors, starting_node):
 
                 # Add [ parent , child ] to split
                 if parents[0] == i[0]:
-                    print( f' {parents[0]}s Child is {i[1]}' )
+                    # print( f' {parents[0]}s Child is {i[1]}' )
                     split.append( [ parents[0] , i[1] ] )
 
                 # Add [ parent , child ] to split
                 elif parents[1] == i[0]:
-                    print( f' {parents[1]}s Child is {i[1]}' )
+                    # print( f' {parents[1]}s Child is {i[1]}' )
                     split.append( [ parents[1] , i[1] ] )
 
     # Look through split and compare if the 
@@ -93,10 +90,16 @@ def earliest_ancestor(ancestors, starting_node):
 
             else:
                 return split[ i ][0]
+        
 
 
     print( 'Parents:' , parents )
-    print( 'SPLIT' , split )
+    print( 'Parents are from different generations' )
+
+    if len( split ) > 0:
+        print( '\n-----------------------------------' )
+        print( 'SPLIT' , split )
+        print( '-----------------------------------' )
 
     # if there are more than 2 ancestors from different generations, return the last ( oldest )
     if len( parents ) >= 2:
