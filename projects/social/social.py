@@ -123,7 +123,7 @@ class SocialGraph:
 
         print( '\nFind paths from:' , userID )
 
-        queue = []
+        q = Queue()
 
         # queue copies of the current path
 
@@ -136,18 +136,18 @@ class SocialGraph:
 
             visited.update({ userID : self.friendships[ userID ] })
 
-        queue.append( userID )
+        q.enqueue( userID )
 
         temp = userID
         visit = []
 
-        while len( queue ) >= 1:
+        while len( q.queue ) > 0:
 
-            temp = queue[0]
+            temp = q.queue[0]
             visit.append( temp )
             print( '\ntemp' , temp )
 
-            for i in self.friendships[ queue[0] ]:
+            for i in self.friendships[ q.queue[0] ]:
 
                 if i in visited:
 
@@ -165,13 +165,13 @@ class SocialGraph:
                     else:        
 
                         print( visit , i )
-                        queue.append( i )
+                        q.enqueue( i )
                         visited.update({ i : self.friendships[ i ] })
 
-            queue.pop( 0 )
+            q.dequeue( 0 )
 
         # print( 'PATH' , paths )
-        print( 'Queue' , queue )
+        print( 'Queue' , q.queue )
         print( 'Visited' , visited )
         # return visited
 
