@@ -36,161 +36,130 @@ class Queue():
     def size(self):
         return len(self.queue)
 
-def Examine( room ):
-                               # Room # ex: 1
-    print( 'Examining room:' , room.id )
-
-    directions = []
-    room_directions = { room.id : directions }
-
-    if room.n_to:
-        # print( 'You can go north' , room.n_to.id )
-        directions.append( room.n_to.id)
-    else:
-        # print( 'You cant go north' )
-        directions.append( 'None' )
-
-    if room.s_to:
-        # print( 'You can go south' )
-        directions.append( room.s_to.id )
-    else:
-        # print( 'You cant go south' )
-        directions.append( 'None' )
-
-    if room.e_to:
-        # print( 'You can go east' )
-        directions.append( room.e_to.id )
-    else:
-        # print( 'You cant go east' )
-        directions.append( 'None' )
-
-    if room.w_to:
-        # print( 'You can go west' )
-        directions.append( room.w_to.id )
-    else:
-        # print( 'You cant go west' )
-        directions.append( 'None' )
-
-    return room_directions
-
 
 # Fill this out
 traversalPath = []
 q = Queue()
 visited = set()
+
+# index 0 is most recent room
 history = []
+
+visited.add( player.currentRoom.id )
+
+def Backtrack():
+
+    print( 'HISTORY' , history )
+    for i in history:
+        
+
+        if i == 'n':
+            player.travel( 's' )
+            traversalPath.append( 's' )
+
+        elif i == 's':
+            player.travel( 'n' )
+            traversalPath.append( 'n' )
+
+        elif i == 'e':
+            player.travel( 'w' )
+            traversalPath.append( 'w' )
+
+        elif i == 'w':
+            player.travel( 'e' )
+            traversalPath.append( 'e' )
+
+        print( 'Current Room:' , player.currentRoom.id )
+
+        history.pop(0)
+    Explore()
 
 def Explore():
 
     print( 'Current Room:' , player.currentRoom.id )
+    print( 'exits:' , player.currentRoom.getExits() )
+    print( 'Visited:' , visited )
 
-    room_details = Examine( player.currentRoom )
+    exits = player.currentRoom.getExits()
 
-    # print( 'Visited:' , visited )
+    for i in range( len( exits ) ):
 
-    if player.currentRoom.id in visited:
-
-        print( 'You have already explored that room' )
-        print( 'Visited:' , visited )
-        print( 'Queue:' , q.queue )
-        q.queue = []
-        print( 'Go back to closest room with a non explored exit' )
+        print( i )
         
+        if exits[i] == 'n':
 
-    else:
+            if player.currentRoom.n_to.id not in visited:
+                print( 'N not visited' )
+                q.enqueue( 'n' )
+                Move()
+                break
 
-        print( 'Unexplored Room' )
-        # print( 'Room Details:' , room_details )
-
-        room_exits = room_details[ player.currentRoom.id ]
-
-        for i in range( len( room_exits) ):
-                
-            if room_exits[i] == 'None':
-                # No Room that way
-                None
-                
             else:
 
-                if i == 0:
+                print( 'find a new path' )
 
-                    if room_exits[i] in visited:
-                        print( 'Already been here' )
+        elif exits[i] == 's':
+            if player.currentRoom.s_to.id not in visited:
+                print( 'S not visited' )
+                q.enqueue( 's' )
+                Move()
+                break
 
-                    else:
-                        
-                        print( 'North:' , room_exits[i] )
-                        q.enqueue( 'n' )
+            else:
 
-                elif i == 1:
+                print( 'find a new path' )
 
-                    if room_exits[i] in visited:
-                        print( 'Already been here' )
+        elif exits[i] == 'e':
+            if player.currentRoom.e_to.id not in visited:
+                print( 'E not visited' )
+                q.enqueue( 'e' )
+                Move()
+                break
 
-                    else:
-                        
-                        print( 'South:' , room_exits[i] )
-                        q.enqueue( 's' )
+            else:
 
-                elif i == 2:
+                print( 'find a new path' )
 
-                    if room_exits[i] in visited:
-                        print( 'Already been here' )
+        elif exits[i] == 'w':
+            if player.currentRoom.w_to.id not in visited:
+                print( 'W not visited' )
+                q.enqueue( 'w' )
+                Move()
+                break
 
-                    else:
-                        
-                        print( 'East:' , room_exits[i] )
-                        q.enqueue( 'e' )
 
-                elif i == 3:
+    if len( visited ) == len( roomGraph ):
+        return 'Hi'
+    print( 'find a new path bro' )
+    Backtrack()
 
-                    if room_exits[i] in visited:
-                        print( 'Already been here' )
-
-                    else:
-                        
-                        print( 'West:' , room_exits[i] )
-                        q.enqueue( 'w' )
-
-                visited.add( player.currentRoom.id )
-
-    # print( "Queue:" , q.queue )
+def Move():
 
     if len( q.queue ) > 0:
 
-        if q.queue[0] == 'n':
-            print( 'North' )
-            player.travel( 'n' )
-            traversalPath.append( 'n' )
-            history.append( 'n' )
+        print( 'Queue' , q.queue )
 
-        elif q.queue[0] == 's':
-            print( 'South' )
-            player.travel( 's' )
-            traversalPath.append( 's' )
-            history.append( 's' )
-
-        elif q.queue[0] == 'e':
-            print( 'East' )
-            player.travel( 'e')
-            traversalPath.append( 'e' )
-            history.append( 'e' )
-
-        elif q.queue[0] == 'w':
-            print( 'West' )
-            player.travel( 'w' )
-            traversalPath.append( 'w' )
-            history.append( 'w' )
-
+        player.travel( q.queue[0] )
+        traversalPath.append( q.queue[0] )
+        history.insert( 0 , q.queue[0] )
+        visited.add( player.currentRoom.id )
         q.dequeue()
-        Explore()
 
-if traversalPath == []:
     Explore()
 
-traversalPath.pop()
-print( 'TRAVERSAL PATH' , traversalPath )
-print( 'History' , history )
+    print( 'Queue' , q.queue )
+    print( 'Current Room:' , player.currentRoom.id )
+
+count = 0
+
+if count == 0:
+    count += 1
+    Explore()
+
+
+            
+
+
 
 
 
