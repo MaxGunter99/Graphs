@@ -140,37 +140,56 @@ class SocialGraph:
 
         temp = userID
         visit = []
+        # storage = []
 
-        while len( q.queue ) > 0:
+        # storage.append([ userID , [userID] ])
+
+        while len( q.queue ) >= 1:
 
             temp = q.queue[0]
-            visit.append( temp )
-            print( '\ntemp' , temp )
+            # visit.append( temp )
 
             for i in self.friendships[ q.queue[0] ]:
 
-                if i in visited:
+                # print( 'q' , q.queue , i )
 
-                    # print( f'{i} in visited' )
+                if i in visited:
                     None
 
                 else:
 
+                    q.enqueue( i )
+                    visited.update({ i : self.friendships[ i ] })
+
                     if len( visit ) > 2:
-                        if visit[ len( visit ) - 1 ] in self.friendships[ visit[ len( visit ) - 3 ] ]:
-                            if visit[ len( visit ) - 2 ] in self.friendships[ visit[ len( visit ) - 3 ] ]:
+
+                        if visit[ len( visit ) - 1 ] in self.friendships[ i ]:
+
+                            if visit[ len( visit ) - 2 ] in self.friendships[ i ]:
+
                                 visit.pop( len( visit ) - 2 )
                                 print( visit , i )
+                                visit.append( i )
+
+                            else:        
+
+                                print( visit , i )
+                                visit.append( i )
+
+                        else:        
+
+                            print( visit , i )
+                            visit.append( i )
+
 
                     else:        
 
                         print( visit , i )
-                        q.enqueue( i )
-                        visited.update({ i : self.friendships[ i ] })
+                        visit.append( i )
 
-            q.dequeue( 0 )
+            q.queue.pop( 0 )
 
-        # print( 'PATH' , paths )
+        # print( 'Storage' , storage )
         print( 'Queue' , q.queue )
         print( 'Visited' , visited )
         # return visited
