@@ -56,6 +56,26 @@ def Backtrack():
 
         print( '\nCurrent Room:' , player.currentRoom.id )
         print( history )
+
+        exits = player.currentRoom.getExits()
+
+        for i in exits:
+            
+            if i == 'n':
+                if player.currentRoom.n_to.id not in visited:
+                    print( f'\n {player.currentRoom.n_to.id} not in visited!\n' )
+
+            elif i == 's':
+                if player.currentRoom.s_to.id not in visited:
+                    print( f'\n {player.currentRoom.s_to.id} not in visited!\n' )
+
+            elif i == 'e':
+                if player.currentRoom.e_to.id not in visited:
+                    print( f'\n {player.currentRoom.e_to.id} not in visited!\n' )
+
+            elif i == 'w':
+                f player.currentRoom.w_to.id not in visited:
+                    print( f'\n {player.currentRoom.n_to.id} not in visited!\n' )
         
 
         if i == 'n':
