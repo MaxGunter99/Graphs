@@ -95,36 +95,40 @@ def Explore():
             if player.currentRoom.n_to.id not in visited:
                 # print( 'N not visited' )
                 q.enqueue( 'n' )
-                return Move()
+                print( 'called' )
+                # return Move()
 
         elif exits[i] == 's':
             if player.currentRoom.s_to.id not in visited:
                 # print( 'S not visited' )
                 q.enqueue( 's' )
-                return Move()
+                print( 'called' )
+                # return Move()
 
         elif exits[i] == 'e':
             if player.currentRoom.e_to.id not in visited:
                 # print( 'E not visited' )
                 q.enqueue( 'e' )
-                return Move()
+                print( 'called' )
+                # return Move()
 
         elif exits[i] == 'w':
             if player.currentRoom.w_to.id not in visited:
                 # print( 'W not visited' )
                 q.enqueue( 'w' )
-                return Move()
+                print( 'called' )
+                # return Move()
 
 
-    if len( visited ) == len( roomGraph ):
+    # if len( visited ) == len( roomGraph ):
 
-        # print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
-        # print( f'History: {history}\n' )
-        Backtrack()
-        return 'Hi'
+    #     # print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
+    #     # print( f'History: {history}\n' )
+    #     Backtrack()
+    #     return 'Hi'
     
-    else:
-        return Backtrack()
+    # else:
+    #     return Backtrack()
 
 def Move():
 
