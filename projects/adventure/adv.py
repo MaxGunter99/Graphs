@@ -61,24 +61,15 @@ def Reverse( direction ):
 def Backtrack():
 
     new_direction = Reverse( history[0] )
+    history.pop(0)
     player.travel( new_direction )
     traversalPath.append( new_direction )
-    history.pop(0)
-
-    return Move()
-
-    # while len( q.queue ) > 0:
-
-    #     print( 'Queue' , q.queue )
-
-    #     player.travel( q.queue[0] )
-    #     traversalPath.append( q.queue[0] )
-    #     history.insert( 0 , q.queue[0] )
-    #     visited.add( player.currentRoom.id )
-    #     q.dequeue()
+    Explore()
 
         
 def Explore():
+
+    # return
 
     # world.printRooms()
     visited.add( player.currentRoom.id )
@@ -96,13 +87,18 @@ def Explore():
                 # print( 'N not visited' )
                 q.enqueue( 'n' )
                 print( 'called' )
-                # return Move()
+                i += len( exits )
+                Move()
+                return i
 
         elif exits[i] == 's':
             if player.currentRoom.s_to.id not in visited:
                 # print( 'S not visited' )
                 q.enqueue( 's' )
                 print( 'called' )
+                i += len( exits )
+                Move()
+                return i
                 # return Move()
 
         elif exits[i] == 'e':
@@ -110,31 +106,30 @@ def Explore():
                 # print( 'E not visited' )
                 q.enqueue( 'e' )
                 print( 'called' )
-                # return Move()
+                i += len( exits )
+                Move()
+                return i
 
         elif exits[i] == 'w':
             if player.currentRoom.w_to.id not in visited:
                 # print( 'W not visited' )
                 q.enqueue( 'w' )
                 print( 'called' )
-                # return Move()
+                i += len( exits )
+                Move()
+                return i
 
+    if len( visited ) == len( roomGraph ):
 
-    # if len( visited ) == len( roomGraph ):
+        # print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
+        # print( f'History: {history}\n' )
+        return 'Hi'
 
-    #     # print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
-    #     # print( f'History: {history}\n' )
-    #     Backtrack()
-    #     return 'Hi'
-    
-    # else:
-    #     return Backtrack()
+    Backtrack()
 
 def Move():
 
     while len( q.queue ) > 0:
-
-        # print( 'Queue' , q.queue )
 
         player.travel( q.queue[0] )
         traversalPath.append( q.queue[0] )
