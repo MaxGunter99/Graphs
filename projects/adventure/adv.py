@@ -123,6 +123,13 @@ def Explore():
 
     exits = player.currentRoom.getExits()
 
+        if len( visited ) == len( roomGraph ):
+
+        os.system( 'clear' )
+        print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
+        print( f'History: {history}\n' )
+        return 'Hi'
+
     for i in range( len( exits ) ):
         
         if exits[i] == 'n':
@@ -162,13 +169,6 @@ def Explore():
                 i += len( exits )
                 Move()
                 return i
-
-    if len( visited ) == len( roomGraph ):
-
-        os.system( 'clear' )
-        print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
-        print( f'History: {history}\n' )
-        return 'Hi'
 
     Backtrack()
 
