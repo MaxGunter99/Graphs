@@ -2,6 +2,7 @@ from room import Room
 from player import Player
 from world import World
 import os
+import time
 os.system( 'clear' )
 
 import random
@@ -46,6 +47,7 @@ visited = set()
 history = []
 
 def Reverse( direction ):
+    print( 'Reverse called' )
 
     if direction == 'n':
         direction = 's'
@@ -60,13 +62,9 @@ def Reverse( direction ):
 
 def Backtrack():
 
-    while len( history )  > 0:
+    print( 'Backtrack Called' )
 
-        new_direction = Reverse( history[0] )
-        player.travel( new_direction )
-        history.pop(0)
-        traversalPath.append( new_direction )
-        print( f'History: {history}\n' )
+    while len( history ) > 0:
 
         exits = player.currentRoom.getExits()
 
@@ -76,7 +74,7 @@ def Backtrack():
 
                 if player.currentRoom.n_to.id not in visited:
                     player.travel( 'n' )
-                    traversalPath.append( 'n' )
+                    # traversalPath.append( 'n' )
                     print( 'called' )
                     i += len( exits )
                     Move()
@@ -85,7 +83,7 @@ def Backtrack():
             elif exits[i] == 's':
                 if player.currentRoom.s_to.id not in visited:
                     q.enqueue( 's' )
-                    traversalPath.append( 's' )
+                    # traversalPath.append( 's' )
                     print( 'called' )
                     i += len( exits )
                     Move()
@@ -94,7 +92,7 @@ def Backtrack():
             elif exits[i] == 'e':
                 if player.currentRoom.e_to.id not in visited:
                     q.enqueue( 'e' )
-                    traversalPath.append( 'e' )
+                    # traversalPath.append( 'e' )
                     print( 'called' )
                     i += len( exits )
                     Move()
@@ -103,14 +101,28 @@ def Backtrack():
             elif exits[i] == 'w':
                 if player.currentRoom.w_to.id not in visited:
                     q.enqueue( 'w' )
-                    traversalPath.append( 'w' )
+                    # traversalPath.append( 'w' )
                     print( 'called' )
                     i += len( exits )
                     Move()
                     return i
 
+        new_direction = Reverse( history[0] )
+        player.travel( new_direction )
+        history.pop(0)
+        traversalPath.append( new_direction )
+        print( f'History: {history}\n' )
+
+    if history:
+        # None
+        Backtrack()
+    else:
+        Explore()
+
         
 def Explore():
+    os.system( 'clear' )
+    print( 'Explore called' )
 
     # return
 
@@ -118,70 +130,105 @@ def Explore():
     visited.add( player.currentRoom.id )
     print( '\n' )
     print( 'Current Room:' , player.currentRoom.id )
-    print( 'Visited:' , visited , 'Length:' , len( visited ) )
-    print( 'History' , history )
+    print( '\nVisited:' , visited , '\nLength:' , len( visited ) )
+    print( '\nHistory' , history )
+
+    if len( visited ) == 434:
+        
+        world.printRooms()
+        print( 'Current Room:' , player.currentRoom.id )
+        print( '\nVisited:' , visited , '\nVisited Length:' , len( visited ) )
+        print( '\nHistory' , history )
+        return
 
     exits = player.currentRoom.getExits()
-
-        if len( visited ) == len( roomGraph ):
-
-        os.system( 'clear' )
-        print( f'\n Queue: {q.queue} , Current Room: {player.currentRoom.id}' )
-        print( f'History: {history}\n' )
-        return 'Hi'
+       
 
     for i in range( len( exits ) ):
         
         if exits[i] == 'n':
 
             if player.currentRoom.n_to.id not in visited:
-                # print( 'N not visited' )
+                print( player.currentRoom.n_to.id , 'not visited' )
                 q.enqueue( 'n' )
-                print( 'called' )
                 i += len( exits )
                 Move()
                 return i
+
+            else:
+                print( 'Cant go N' )
 
         elif exits[i] == 's':
             if player.currentRoom.s_to.id not in visited:
-                # print( 'S not visited' )
+                print( player.currentRoom.s_to.id , 'not visited' )
                 q.enqueue( 's' )
-                print( 'called' )
                 i += len( exits )
                 Move()
                 return i
-                # return Move()
+
+            else:
+                print( 'Cant go S' )
 
         elif exits[i] == 'e':
             if player.currentRoom.e_to.id not in visited:
-                # print( 'E not visited' )
+                print( player.currentRoom.e_to.id , 'not visited' )
                 q.enqueue( 'e' )
-                print( 'called' )
                 i += len( exits )
                 Move()
                 return i
+
+            else:
+                print( 'Cant go E' )
 
         elif exits[i] == 'w':
             if player.currentRoom.w_to.id not in visited:
-                # print( 'W not visited' )
+                print( player.currentRoom.w_to.id , 'not visited' )
                 q.enqueue( 'w' )
-                print( 'called' )
                 i += len( exits )
                 Move()
                 return i
 
-    Backtrack()
+            else:
+                print( 'Cant go W' )
+
+    if len( visited ) == len( roomGraph ):
+
+        os.system( 'clear' )
+        print( f'\n Queue: {q.queue} \nCurrent Room: {player.currentRoom.id}' )
+        print( f'History: {history}\n' )
+        return 'Hi'
+
+    else:
+
+        if q.queue:
+
+            Move()
+
+        else:
+
+            Backtrack()
 
 def Move():
+
+    print( 'Move called' )
+    print( 'Current Room:' , player.currentRoom.id )
+    print( 'Queue before:' , q.queue )
 
     while len( q.queue ) > 0:
 
         player.travel( q.queue[0] )
         traversalPath.append( q.queue[0] )
-        history.insert( 0 , q.queue[0] )
         visited.add( player.currentRoom.id )
-        q.dequeue()
+        history.insert( 0 , q.queue[0] )
+        q.queue.pop(0)
 
+    print( 'Current Room:' , player.currentRoom.id )
+    print( 'Queue after:' , q.queue )
+
+    for i in range(1):
+        print( "Tick" )
+        t = float( .01 )
+        time.sleep(t)
 
     Explore()
 
