@@ -64,6 +64,49 @@ def Backtrack():
     history.pop(0)
     player.travel( new_direction )
     traversalPath.append( new_direction )
+
+    exits = player.currentRoom.getExits()
+
+    for i in range( len( exits ) ):
+        
+        if exits[i] == 'n':
+
+            if player.currentRoom.n_to.id not in visited:
+                # print( 'N not visited' )
+                q.enqueue( 'n' )
+                print( 'called' )
+                i += len( exits )
+                Move()
+                return i
+
+        elif exits[i] == 's':
+            if player.currentRoom.s_to.id not in visited:
+                # print( 'S not visited' )
+                q.enqueue( 's' )
+                print( 'called' )
+                i += len( exits )
+                Move()
+                return i
+                # return Move()
+
+        elif exits[i] == 'e':
+            if player.currentRoom.e_to.id not in visited:
+                # print( 'E not visited' )
+                q.enqueue( 'e' )
+                print( 'called' )
+                i += len( exits )
+                Move()
+                return i
+
+        elif exits[i] == 'w':
+            if player.currentRoom.w_to.id not in visited:
+                # print( 'W not visited' )
+                q.enqueue( 'w' )
+                print( 'called' )
+                i += len( exits )
+                Move()
+                return i
+
     Explore()
 
         
