@@ -107,6 +107,9 @@ def Backtrack():
                 Move()
                 return i
 
+    if q.queue:
+        Move()
+    else:
     Backtrack()
 
         
